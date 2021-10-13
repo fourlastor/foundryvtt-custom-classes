@@ -1,0 +1,59 @@
+<form class="flexcol">
+  {{#each classFeatures as |class className|}}
+  <ol class="items-list classes-list">
+    <li class="items-header flexrow">
+      <h2 class="item-name flexrow flex4">{{className}}</h2>
+      <div class="item-controls flexrow">
+        <a class="item-control item-create" title="Create Item" data-type="weapon">
+          <i class="fas fa-plus"></i> Subclass
+        </a>
+      </div>
+    </li>
+    <ol class="item-list subclasses-list">
+      {{#each class.subclasses as |subclass subclassName|}}
+      <li class="items-header flexrow">
+        <h3 class="item-name flexrow flex4">{{subclassName}}</h3>
+        <div class="item-controls flexrow">
+          <a class="item-control item-create" title="Create Item" data-type="weapon">
+            <i class="fas fa-plus"></i> Feature
+          </a>
+          <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+        </div>
+      </li>
+      <ol class="item-list features-list">
+        {{#each subclass.features as |features level|}}
+        <li class="items-header flexrow">
+          <h4 class="item-name flexrow flex4">Level {{level}}</h4>
+          <div class="item-controls flexrow">
+            <a class="item-control item-create" title="Create Item" data-type="weapon">
+              <i class="fas fa-plus"></i> Feature
+            </a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+
+        {{#each features}}
+        <li class="item flexrow">
+          <div class="item-name flexrow flex4">
+            <input type="text" name="exampleInput" value="{{this}}" />
+          </div>
+
+          <div class="item-controls flexrow">
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/each}}
+        {{/each}}
+
+      </ol>
+      {{/each}}
+    </ol>
+  </ol>
+  {{/each}}
+
+  <footer class="sheet-footer flexrow">
+    <button type="submit" name="submit">
+      <i class="fa fa-check"></i> OK
+    </button>
+  </footer>
+</form>
