@@ -3,16 +3,18 @@ function log(data) {
 }
 
 Hooks.once('ready', async function () {
-  log(CONFIG.DND5E.classFeatures);
+  const originalClassFeatures = CONFIG.DND5E.classFeatures
+  log(originalClassFeatures)
+  CustomClassesApplication.originalClassFeatures = originalClassFeatures
 
   game.settings.registerMenu("myModule", "mySettingsMenu", {
     name: "Custom Classes",
     label: "Manage custom classes",      // The text label used in the button
     hint: "Manage custom classes.",
     icon: "fas fa-cogs",               // A Font Awesome icon used in the submenu button
-    type: MySubmenuApplicationClass,   // A FormApplication subclass
+    type: CustomClassesApplication,   // A FormApplication subclass
     restricted: true                   // Restrict this submenu to gamemaster only?
-  });
+  })
   //   await game.settings.register('myModuleName', 'myComplexSettingName', {
   //     scope: 'world',     // "world" = sync to db, "client" = local storage
   //     config: false,      // we will use the menu above to edit this setting
@@ -21,16 +23,10 @@ Hooks.once('ready', async function () {
   //   });
 });
 
+class CustomClassesApplication extends FormApplication {
 
+  static originalClassFeatures
 
-
-
-/**
- * For more information about FormApplications, see:
- * https://foundryvtt.wiki/en/development/guides/understanding-form-applications
- */
-class MySubmenuApplicationClass extends FormApplication {
-  // lots of other things...
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "modules/foundryvtt-custom-classes/templates/settings.hbs",
@@ -42,9 +38,38 @@ class MySubmenuApplicationClass extends FormApplication {
   }
 
   getData() {
+    // game.settings.get('myModuleName', 'myComplexSettingName');
+    return this.convertToData(CONFIG.DND5E.classFeatures)
+  }
+
+  convertToData(classFeatures) {
     return {
-      classFeatures: CONFIG.DND5E.classFeatures,
-    } // game.settings.get('myModuleName', 'myComplexSettingName');
+      classes: this.names(classFeatures).map(className => {
+        const clazz = classFeatures[className]
+        return {
+          name: className,
+          paths: this.names(clazz.subclasses).map(subclassName => {
+            const subclass = clazz.subclasses[subclassName]
+            const features = subclass.features;
+            return {
+              name: subclassName,
+              levels: this.names(features).map(level => ({
+                level: level,
+                features: features[level],
+              }))
+            }
+          }),
+        }
+      })
+    }
+  }
+
+  names(originalObj) {
+    const names = []
+    for (let it in originalObj) {
+      names.push(it)
+    }
+    return names
   }
 
   _updateObject(event, formData) {
