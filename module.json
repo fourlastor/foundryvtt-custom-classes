@@ -1,6 +1,6 @@
 {
-  "name": "module",
-  "title": "New Module",
+  "name": "fourlastor-custom-classes",
+  "title": "Custom classes",
   "description": "",
   "version": "This is auto replaced",
   "library": "false",
@@ -9,8 +9,8 @@
   "compatibleCoreVersion": "0.8.8",
   "authors": [
     {
-      "name": "The League of Extraordinary FVTT Developers",
-      "url": "https://github.com/League-of-Foundry-Developers",
+      "name": "Daniele Conti",
+      "url": "https://github.com/fourlastor",
       "discord": "discordID#0001"
     }
   ],
