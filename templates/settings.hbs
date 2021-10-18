@@ -1,8 +1,9 @@
 <form class="flexcol">
-  {{#each classes}}
+  {{#each classFeatures as |class className|}}
   <ol class="items-list classes-list">
+    <input type="hidden" name="{{className}}.id" value="{{className}}" />
     <li class="items-header flexrow">
-      <h2 class="item-name flexrow flex3">{{name}}</h2>
+      <h2 class="item-name flexrow flex3">{{className}}</h2>
       <div class="item-controls flexrow">
         <a class="item-control item-create" title="Create Item" data-type="weapon">
           <i class="fas fa-plus"></i> Subclass
@@ -10,9 +11,10 @@
       </div>
     </li>
     <ol class="item-list subclasses-list">
-      {{#each paths}}
+      {{#each class.subclasses as |subclass subclassName|}}
+      <input type="hidden" name="{{className}}.{{subclassName}}.id" value="{{subclassName}}" />
       <li class="items-header flexrow">
-        <h3 class="item-name flexrow flex3">{{name}}</h3>
+        <h3 class="item-name flexrow flex3">{{subclassName}}</h3>
         <div class="item-controls flexrow">
           <a class="item-control item-create" title="Create Item" data-type="weapon">
             <i class="fas fa-plus"></i> Level
@@ -21,7 +23,7 @@
         </div>
       </li>
       <ol class="item-list features-list">
-        {{#each levels}}
+        {{#each subclass.features as |features level|}}
         <li class="items-header flexrow">
           <h4 class="item-name flexrow flex3">Level {{level}}</h4>
           <div class="item-controls flexrow">
@@ -35,7 +37,7 @@
         {{#each features}}
         <li class="item flexrow">
           <div class="item-name flexrow flex3">
-            <input type="text" name="exampleInput" value="{{this}}" />
+            <input type="text" name="{{className}}.{{subclassName}}.{{level}}" value="{{this}}" />
           </div>
 
           <div class="item-controls flexrow">
